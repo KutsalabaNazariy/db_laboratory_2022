@@ -1,6 +1,6 @@
-SELECT volc_country, elevation 
-FROM volcano JOIN eruption USING (volc_number)
-   
+SELECT TRIM(volc_country), COUNT(volc_name) AS volc_amount 
+FROM volcano GROUP BY volc_country
+
 
 SELECT eruption_type, elevation 
 FROM eruption_types JOIN eruption USING(eruption_id) 
@@ -16,5 +16,5 @@ UNION (
          GROUP BY eruption_type)
 
 
-SELECT volc_country, COUNT(volc_name) AS volc_amount 
-FROM volcano GROUP BY volc_country
+SELECT TRIM(volc_country), elevation 
+FROM volcano JOIN eruption USING(volc_number)
