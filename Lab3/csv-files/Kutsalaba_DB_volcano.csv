@@ -1,0 +1,11 @@
+volc_number,volc_name,volc_country,eruption_id
+210010,West Eifel Volcanic Field     ,Germany                       ,None
+210030,Olot Volcanic Field           ,Spain                         ,None
+212020,Methana                       ,Greece                        ,None
+212040,Santorini                     ,Greece                        ,None
+212030,Milos                         ,Greece                        ,None
+212051,Yali                          ,Greece                        ,None
+210020,Chaine des Puys               ,France                        ,None
+211003,Vulsini                       ,Italy                         ,None
+211020,Vesuvius                      ,Italy                         ,None
+211071,Pantelleria                   ,Italy                         ,None
