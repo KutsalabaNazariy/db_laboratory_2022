@@ -1,14 +1,21 @@
--- a function that removes volcanoes whose eruption height is less than 1000
-CREATE OR REPLACE FUNCTION delete_volcano() RETURNS void
-LANGUAGE plpgsql
+-- show eruption elevation information about the volcano
+
+CREATE OR REPLACE FUNCTION get_volcano_eruption_elevation(volc_arg varchar) 
+    RETURNS TABLE (volcano_name varchar, volc_elevation integer)
+    LANGUAGE 'plpgsql'
 AS $$
-BEGIN 
-   DELETE FROM eruption 
-   WHERE eruption.elevation IN 
-      (select eruption.elevation from volcano join eruption using(volc_number) 
-	   join eruption_types using(eruption_id) where eruption.elevation<=1000);
+BEGIN
+    RETURN QUERY
+		SELECT volc_name::varchar, elevation::integer
+		FROM volcano
+			INNER JOIN eruption 
+			USING(volc_number)
+		WHERE volc_name = volc_arg;
 END;
-$$;
+$$
+
+
+SELECT * FROM get_volcano_eruption_elevation('Milos');
 
 
 

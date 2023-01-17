@@ -1,9 +1,9 @@
 -- procedure
-CALL volc_and_type('Submarine');
-CALL volc_and_type('Maar');
+CALL show_count_volcano('Submarine');
+CALL show_count_volcano('Maar');
 
 -- function
-SELECT delete_volcano();
+SELECT get_volcano_eruption_elevation('Milos');
      
 INSERT INTO eruption
 VALUES (210010, 1, 600),
@@ -18,7 +18,7 @@ VALUES (210010, 1, 600),
        (211071, 7, 836);	 
 SELECT * FROM eruption;
 
--- тригер
+-- trigger
 INSERT INTO VOLCANO(volc_number, volc_name, volc_country) VALUES ('214090','porak','Armenia-Azerbaijan');
 INSERT INTO VOLCANO(volc_number, volc_name, volc_country) VALUES ('214050','samsari volcanic center','Georgia');
 INSERT INTO VOLCANO(volc_number, volc_name, volc_country) VALUES ('213040','TENDURUK DAGI','Turkey')

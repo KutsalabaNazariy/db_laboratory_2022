@@ -1,16 +1,34 @@
---  a trigger that when a new row is inserted into the volcano table
--- writes the name of the volcano, each word begins with a capital letter
+DROP TRIGGER IF EXISTS customer_insert ON customers;
 
-CREATE TRIGGER inserting_volc_name 
-AFTER INSERT ON volcano
-FOR EACH ROW EXECUTE FUNCTION make_capital()
-
-CREATE OR REPLACE FUNCTION make_capital() RETURNS trigger AS
+-- The first step: creating a trigger function
+CREATE OR REPLACE FUNCTION add_to_volcaudit() RETURNS trigger 
+LANGUAGE 'plpgsql'
+AS
 $$
      BEGIN
-          UPDATE Volcano 
-          SET volc_name = INITCAP(volc_name) WHERE VOLCANO.volc_name = NEW.volc_name; 
-		  RETURN NULL; -- result is ignored since this is an AFTER trigger
+          insert into volcanoes_audit(user_name, date, time_, volc_name)
+          VALUES(user, CURRENT_DATE, CURRENT_TIMESTAMP(0), OLD.volc_name);
+          RETURN OLD;
      END;
-$$ LANGUAGE 'plpgsql';
+$$;
 
+-- The second stage: creating a trigger
+CREATE TRIGGER volcano_audit
+AFTER DELETE OR UPDATE ON volcano
+FOR EACH ROW EXECUTE FUNCTION add_to_volcaudit();
+
+
+CREATE TABLE volcanoes_audit(
+    id SERIAL PRIMARY KEY,
+    user_name varchar(50) NOT NULL,
+    date date,
+    time_ time,
+	volc_name varchar
+);
+
+--DELETE FROM volcano WHERE volc_name = 'Yali'
+
+--SELECT * FROM volcanoes_audit
+
+-- INSERT INTO volcano(volc_number, volc_name, volc_country, eruption_id)
+-- VALUES(212051, 'Yali', 'Greece', NULL);

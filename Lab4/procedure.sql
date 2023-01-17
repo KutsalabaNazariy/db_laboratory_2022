@@ -1,16 +1,17 @@
--- a procedure that outputs the name and type of a given volcano
-CREATE OR REPLACE PROCEDURE volc_and_type(type_ varchar(50))
+-- showing numbers of volcanoes in the country
+
+CREATE OR REPLACE PROCEDURE show_count_volcano(IN country_name varchar, INOUT x integer DEFAULT 0)
 LANGUAGE 'plpgsql'
 AS $$
-DECLARE volcano_name volcano.volc_name%TYPE;
-DECLARE volcano_type eruption_types.eruption_type%TYPE;
-
 BEGIN
-    SELECT volc_name, eruption_type INTO volcano_name, volcano_type FROM volcano JOIN eruption USING(volc_number) 
-																	JOIN eruption_types USING(eruption_id)
-	WHERE eruption_type = type_;
-    RAISE INFO 'Volcano name: %,  Volcano type: %', TRIM(volcano_name), TRIM(volcano_type);
+   SELECT COUNT(*) FROM volcano INTO x
+   GROUP BY volc_country 
+   HAVING volc_country = country_name;
 END;
 $$;
---DROP PROCEDURE volc_and_type(varchar(50));
+
+-- DROP PROCEDURE show_count_volcano(varchar);
+
+-- CALL show_count_volcano('Greece');
+
 
